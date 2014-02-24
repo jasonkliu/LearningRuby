@@ -15,6 +15,15 @@
 #
 def triangle(a, b, c)
   # WRITE THIS CODE
+  a, b, c = [a, b, c].sort # Sort the items
+  raise TriangleError if a <= 0 or a + b <= c
+  if a == c # elements are sorted, implies equilateral
+	  return :equilateral
+  elsif a == b || a == c || b == c # elsif instead of else if
+      return :isosceles
+  else 
+      return :scalene
+  end
 end
 
 # Error class used in part 2.  No need to change this code.
