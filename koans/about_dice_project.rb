@@ -4,15 +4,13 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 #
 class DiceSet
   def roll(n)
-    @number = [1, 2, 3, 4, 5, 6]
-    values = []
-    while n > 0
-	   # values.push(@number.sample(1 + rand(@number.count)))
-	   values.push(@number[rand(@number.count)])
-	   n -= 1
-	end
-	print values
-	return values
+    number = [1, 2, 3, 4, 5, 6]
+	values = number.sample(n)
+	@values = values
+  end
+
+  def values
+    @values 
   end
 end
 
