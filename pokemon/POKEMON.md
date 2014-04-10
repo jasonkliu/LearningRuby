@@ -1,9 +1,6 @@
 Pokemon Assignment
 ==================
 
-
-This assignment should be done in the folder `assignments/pokemonclass/YOURNAME`
-
 1. Read [Pine.fm's chapter on Classes](http://pine.fm/LearnToProgram/?Chapter=09)
 2. Finish the `Pokemon` class according to the [Requirements](#requirements---data) listed below
   - Add 3 attributes of your choice to the required `Pokemon` attributes.
