@@ -6,10 +6,10 @@ class Pokemon
   # https://stackoverflow.com/questions/4370960/what-is-attr-accessor-in-ruby
   # instead of def name @name end def name= newname @name = newname etc
   attr_accessor :name, :max_health, :current_health, :attack, :defense, :type
-  attr_reader :cry, :moves
+  attr_reader :cry, :movelist
 
   def init(name = "Missingno", max_health = 169, attack = 10,
-   defense = 10, cry = "BWAAAA", type = "Grass", type2 = "Poison")
+           defense = 10, cry = "BWAAAA", type = "Normal", type2 = nil)
     @name = name
     @cry = cry
     @attack = attack
@@ -27,30 +27,47 @@ class Pokemon
       @max_health = max_health
     end
     @current_health = @max_health
+    @movelist = []
 
-    #puts @type
-    #puts @max_health.to_s
     puts @cry  # The Pokemon cries out!
   end
 
   def damage amount
     @current_health = @current_health - amount
+    if @current_health <= 0
+      puts "#{@name} has fainted! Use next Pokemon?"
+    end
   end
 
   def fullheal
     @current_health = @max_health
   end
 
-  # defense
-  def boost_defense amount
+  def boost_defense amount # Spamming Harden is the best!
     @defense += amount
   end
+
+  def move_add(move, pp)
+    #puts [move, pp.to_s]
+    @movelist << [move, pp]          # add move to movelist
+    num = @movelist.find_index([move, pp]) # search the movelist for the move
+    #puts @movelist[num][1]    # Multidimensional array, each has [move, pp]
+    #puts @movelist[num]
+    if @movelist[num][1] > 0
+      puts "Using move #{move}"
+      @movelist[num][1] -= 1
+    else
+      puts "#{@name} used Struggle!"
+    end
+  end
+
 
 end
 
 class Kakuna < Pokemon
   def initialize(name = self.class.name, cry = "waaaaaah!")
     self.init(name, 130, 10, 10, cry, "Bug", "Poison")
+    self.move_add("Harden", 30)
   end
 
   def pokedex  
