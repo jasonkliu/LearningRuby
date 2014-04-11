@@ -17,27 +17,26 @@ Foo.new.some_instance_method
 =end
 
 class Pokemon
+  # https://stackoverflow.com/questions/4370960/what-is-attr-accessor-in-ruby
+  # instead of def name @name end def name= newname @name = newname etc
+  attr_accessor :name, :max_health, :current_health, :attack, :defense 
+  attr_reader :cry, :moves
 
-  def name
-    @name
-  end
-  def name= newname
-    @name = newname
-  end
+  def init(name = "Missingno", max_health = 169, attack = 10, defense = 10, cry = "BWAAAA")
+    @name = name
+    @cry = cry
+    @attack = attack
+    @defense = defense
+    
+    if max_health < 10 || max_health > 999  # Over our boundaries.
+      @max_health = 169
+    else
+      @max_health = max_health
+    end
+    @current_health = @max_health
 
-  #health getters and setters
-  def current_health
-    @current_health
-  end
-  def current_health= newhealth
-    @current_health = newhealth
-  end
-
-  def max_health
-    @max_health
-  end
-  def max_health= newhealth
-    @max_health = newhealth
+    puts @max_health.to_s
+    puts @cry  # The Pokemon cries out!
   end
 
   def damage amount
@@ -67,19 +66,14 @@ class Pokemon
   end
 
   # defense
-  def defense
-    @defense
-  end
-  def defense= ev
-    @defense = ev
-  end
-  def defend amount
+  def boost_defense amount
     @defense += amount
   end
 
 end
 
 p = Pokemon.new
+p.init
 p.name= "Bulbasaur"
 
 p.type= "Grass"
@@ -120,7 +114,7 @@ class Kakuna < Pokemon
   def harden
     if @hardenpp > 0
       @hardenpp -= 1
-      defend 1
+      boost_defense 1
     else
       puts "Kakuna used struggle!"
     end
