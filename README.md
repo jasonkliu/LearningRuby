@@ -7,5 +7,7 @@ beginning with rubykoans.com and branching out
 
 `greedgame.rb`   - a sample program from the Ruby koans. See header of file.
 
+`ordinal.rb`     - a program to display the ordinal version of a number.
+
 `pokemon/`       - a class describing different pokemon. See pokemon/POKEMON.md.
 
