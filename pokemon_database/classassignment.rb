@@ -1,8 +1,3 @@
-# Name: Casey Watts <CHANGE ME>
-# Email: casey.watts@yale.edu <CHANGE ME>
-# ---------------------------
-# Name: Machiste Quintana <CHANGE ME>
-# Email: machiste.quintana@yale.edu <CHANGE ME>
 # ===========================
 
 
