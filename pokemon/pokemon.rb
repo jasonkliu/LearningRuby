@@ -2,6 +2,8 @@
 # of all of the different stats, and also damage, etc. Each separate Pokemon
 # inherits from the Pokemon class, which allows it to use the same methods.
 
+$DEBUG = false # Turn on true for print statements, like #ifdef DEBUG
+
 class Pokemon
   # https://stackoverflow.com/questions/4370960/what-is-attr-accessor-in-ruby
   # instead of def name @name end def name= newname @name = newname etc
@@ -29,12 +31,14 @@ class Pokemon
     @current_health = @max_health
     @movelist = []
 
-    puts @cry  # The Pokemon cries out!
+    if $DEBUG == true
+      puts @cry  # The Pokemon cries out!
+    end
   end
 
   def damage amount
     @current_health = @current_health - amount
-    if @current_health <= 0
+    if @current_health <= 0 and $DEBUG == true
       puts "#{@name} has fainted! Use next Pokemon?"
     end
   end
@@ -53,7 +57,9 @@ class Pokemon
     define_singleton_method attack.name do |enemy|
       num = @movelist.find_index(attack)  # search the movelist for the move
       if @current_health <= 0
-        puts "#{@name} has fainted!"
+        if $DEBUG == true
+          puts "#{@name} has fainted!"
+        end
       elsif @movelist[num].pp > 0
         self.damage @movelist[num].self_damage
         self.boost_defense @movelist[num].self_defense
@@ -61,20 +67,11 @@ class Pokemon
 
         @movelist[num].pp -= 1 # minus the pp
       else
-        puts "#{@name} used struggle!"
+        if $DEBUG == true
+          puts "#{@name} used struggle!"
+        end
       end
     end
-
-
-
-    #puts @movelist[num][1]    # Multidimensional array, each has [move, pp]
-    #puts @movelist[num]
-    #if @movelist[num][1] > 0
-    #  puts "Using move #{move}"
-    #  @movelist[num][1] -= 1
-    #else
-    #  puts "#{@name} used Struggle!"
-    #end
   end
 end
 
@@ -99,6 +96,7 @@ class Kakuna < Pokemon
   def initialize(name = self.class.name, cry = "waaaaaah!")
     self.init(name, 130, 10, 10, cry, "Bug", "Poison")
     self.move_add Move.new(:harden, 0, 0, 1, 30)
+    self.move_add Move.new(:struggle, 5, 10, 0, 99)
   end
 
   def pokedex  
@@ -109,8 +107,9 @@ end
 
 class Pikachu < Pokemon
   def initialize(name = self.class.name, cry = "pikaaaa!")
-    self.init(name, 145, 12, 12, cry, "Electric", nil)
+    self.init(name, 145, 12, 11, cry, "Electric", nil)
     self.move_add Move.new(:thundershock, 0, 20, 1, 30)
+    self.move_add Move.new(:struggle, 5, 10, 0, 99)
   end
 
   def pokedex  
@@ -119,19 +118,19 @@ class Pikachu < Pokemon
   end
 end
 
-k = Kakuna.new
+#k = Kakuna.new
 #puts "Move Name: " + k.movelist[0].name.to_s
-k.pokedex
-puts k.defense # should be 10
-k.harden k
-k.harden k
-k.harden k
-k.harden k
-puts k.defense # should be 14
+#k.pokedex
+#puts k.defense # should be 10
+#k.harden k
+#k.harden k
+#k.harden k
+#k.harden k
+#puts k.defense # should be 14
 
-p = Pikachu.new
-p.pokedex
-puts k.current_health # should be 130
-p.thundershock k
-puts k.current_health # should be 110
+#p = Pikachu.new
+#p.pokedex
+#puts k.current_health # should be 130
+#p.thundershock k
+#puts k.current_health # should be 110
 
