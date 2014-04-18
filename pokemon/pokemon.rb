@@ -49,7 +49,22 @@ class Pokemon
 
   def move_add attack
     @movelist << attack          # add move to movelist
-    num = @movelist.find_index(attack)  # search the movelist for the move
+
+    define_singleton_method attack.name do |enemy|
+      num = @movelist.find_index(attack)  # search the movelist for the move
+      if @current_health <= 0
+        puts "#{@name} has fainted!"
+      elsif @movelist[num].pp > 0
+        self.damage @movelist[num].self_damage
+        self.boost_defense @movelist[num].self_defense
+        enemy.damage @movelist[num].enemy_dmg
+
+        @movelist[num].pp -= 1 # minus the pp
+      else
+        puts "#{@name} used struggle!"
+      end
+    end
+
 
 
     #puts @movelist[num][1]    # Multidimensional array, each has [move, pp]
@@ -90,27 +105,12 @@ class Kakuna < Pokemon
     puts "    Almost incapable of moving, this Pokémon can only 
     harden its shell to protect itself from predators."
   end
-
-  def checkpp
-    @hardenpp
-  end
-  def hardenpp
-    @hardenpp = 30;
-  end
-  def harden
-    if @hardenpp > 0
-      @hardenpp -= 1
-      boost_defense 1
-    else
-      puts "Kakuna used struggle!"
-    end
-  end
 end
 
 class Pikachu < Pokemon
   def initialize(name = self.class.name, cry = "pikaaaa!")
     self.init(name, 145, 12, 12, cry, "Electric", nil)
-    self.move_add Move.new(:harden, 0, 0, 1, 30)
+    self.move_add Move.new(:thundershock, 0, 20, 1, 30)
   end
 
   def pokedex  
@@ -120,23 +120,18 @@ class Pikachu < Pokemon
 end
 
 k = Kakuna.new
-puts "Move Name: " + k.movelist[0].name.to_s
+#puts "Move Name: " + k.movelist[0].name.to_s
 k.pokedex
+puts k.defense # should be 10
+k.harden k
+k.harden k
+k.harden k
+k.harden k
+puts k.defense # should be 14
 
 p = Pikachu.new
 p.pokedex
+puts k.current_health # should be 130
+p.thundershock k
+puts k.current_health # should be 110
 
-#puts k.max_health.to_s
-#k.hardenpp
-#while k.checkpp > 0 do
-#  k.harden
-#end
-#k.harden # test out the struggle!
-#puts "hardenpp " + k.checkpp.to_s
-#puts "defense " + k.defense.to_s
-
-
-
-#pika = Pikachu.new
-#pika.thundershock p
-#puts p.current_health
