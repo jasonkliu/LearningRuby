@@ -84,13 +84,3 @@ end
 
 binding.pry
 
-
-
-
-
-
-
-
-
-
-
