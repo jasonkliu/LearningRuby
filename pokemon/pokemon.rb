@@ -47,27 +47,43 @@ class Pokemon
     @defense += amount
   end
 
-  def move_add(move, pp)
-    #puts [move, pp.to_s]
-    @movelist << [move, pp]          # add move to movelist
-    num = @movelist.find_index([move, pp]) # search the movelist for the move
+  def move_add attack
+    @movelist << attack          # add move to movelist
+    num = @movelist.find_index(attack)  # search the movelist for the move
+
+
     #puts @movelist[num][1]    # Multidimensional array, each has [move, pp]
     #puts @movelist[num]
-    if @movelist[num][1] > 0
-      puts "Using move #{move}"
-      @movelist[num][1] -= 1
-    else
-      puts "#{@name} used Struggle!"
-    end
+    #if @movelist[num][1] > 0
+    #  puts "Using move #{move}"
+    #  @movelist[num][1] -= 1
+    #else
+    #  puts "#{@name} used Struggle!"
+    #end
+  end
+end
+
+class Move
+  attr_accessor :name, :self_damage, :enemy_dmg, :self_defense, :pp, :pp_max
+
+  def initialize(name, self_damage = 0, enemy_dmg = 0, self_defense = 1, pp = 30)
+    @name = name
+    @self_damage = self_damage
+    @enemy_dmg = enemy_dmg
+    @self_defense = self_defense
+    @pp = pp
+    @pp_max = pp
   end
 
-
+  def max_ether
+    @pp = @pp_max
+  end
 end
 
 class Kakuna < Pokemon
   def initialize(name = self.class.name, cry = "waaaaaah!")
     self.init(name, 130, 10, 10, cry, "Bug", "Poison")
-    self.move_add("Harden", 30)
+    self.move_add Move.new(:harden, 0, 0, 1, 30)
   end
 
   def pokedex  
@@ -91,28 +107,35 @@ class Kakuna < Pokemon
   end
 end
 
-k = Kakuna.new
-puts k.max_health.to_s
-k.pokedex
-k.hardenpp
-while k.checkpp > 0 do
-  k.harden
-end
-k.harden # test out the struggle!
-puts "hardenpp " + k.checkpp.to_s
-puts "defense " + k.defense.to_s
-
 class Pikachu < Pokemon
-  def thundershock otherpokemon
-    otherpokemon.damage 10
+  def initialize(name = self.class.name, cry = "pikaaaa!")
+    self.init(name, 145, 12, 12, cry, "Electric", nil)
+    self.move_add Move.new(:harden, 0, 0, 1, 30)
   end
-  def tackle otherpokemon
-    otherpokemon.damage 10
-  end
-  def recover
-    #recoverme
+
+  def pokedex  
+    puts "    It keeps its tail raised to monitor its surroundings. 
+    If you yank its tail, it will try to bite you."
   end
 end
+
+k = Kakuna.new
+puts "Move Name: " + k.movelist[0].name.to_s
+k.pokedex
+
+p = Pikachu.new
+p.pokedex
+
+#puts k.max_health.to_s
+#k.hardenpp
+#while k.checkpp > 0 do
+#  k.harden
+#end
+#k.harden # test out the struggle!
+#puts "hardenpp " + k.checkpp.to_s
+#puts "defense " + k.defense.to_s
+
+
 
 #pika = Pikachu.new
 #pika.thundershock p
